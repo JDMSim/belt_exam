@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Travel Dashboard</title>
+  </head>
+  <body>
+    <a href="{% url 'main:logout' %}">Logout</a><hr>
+    <h1>Hello {{request.session.name}}!</h1>
+    <p>Your Trip Schedules</p>
+    <table width=90% border=1>
+      <tr>
+        <th>Destination</th>
+        <th>Travel Start Date</th>
+        <th>Travel End</th>
+        <th>Plan</th>
+      </tr>
+      {% for mine in mines %}
+        <tr>
+          <td><a href="{% url 'beltexam:trip_details' id=mine.id %}">{{mine.destination}}</a></td>
+          <td>{{mine.start_date|date:'M d, Y'}}</td>
+          <td>{{mine.end_date|date:'M d, Y'}}</td>
+          <td>{{mine.description}}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+      <p>Othe User's Travel Plans</p>
+      <table width=90% border=1>
+        <tr>
+          <th>Name</th>
+          <th>Destination</th>
+          <th>Travel Start Date</th>
+          <th>Travel End</th>
+          <th>Do You Want to Join?</th>
+        </tr>
+        {% for other in others %}
+          <tr>
+            <td>{{other.goers.all.first.name}}</td>
+            <td><a href="{% url 'beltexam:trip_details' id=other.id %}">{{other.destination}}</a></td>
+            <td>{{other.start_date|date:'M d, Y'}}</td>
+            <td>{{other.end_date|date:'M d, Y'}}</td>
+            <td><a href="{% url 'beltexam:join' id=other.id %}">Join</a></td>
+          </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'beltexam:add' %}">Add Travel Plan</a>
+  </body>
+</html>
